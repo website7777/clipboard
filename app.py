@@ -12,7 +12,7 @@ def send_data():
         content = data.get('data')
         if code and content:
             print(f"Storing data for code {code}")  # Логирование
-            data_store[code] = content
+            data_store[code] = content  # Сохраняем данные как словарь
             return jsonify({"status": "success"}), 200
         return jsonify({"status": "error", "message": "Invalid data"}), 400
     except Exception as e:
@@ -26,13 +26,7 @@ def receive_data():
         print(f"Receiving data for code {code}")  # Логирование
         if code in data_store:
             data = data_store[code]
-            try:
-                # Проверяем, что данные можно сериализовать в JSON
-                json.dumps(data)
-                return jsonify(data), 200
-            except json.JSONDecodeError as e:
-                print(f"JSON encode error: {e}")  # Логирование ошибок JSON
-                return jsonify({"status": "error", "message": "Invalid JSON data"}), 500
+            return jsonify(data), 200
         return jsonify({"status": "error", "message": "Code not found"}), 404
     except Exception as e:
         print(f"Error in receive_data: {e}")  # Логирование ошибок
